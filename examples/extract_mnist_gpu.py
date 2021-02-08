@@ -11,10 +11,12 @@ from privacyraven.utils.query import get_target
 from privacyraven.models.victim import train_four_layer_mnist_victim
 from privacyraven.models.four_layer import FourLayerClassifier
 
+# Trains a 4-layer fully connected neural network on MNIST data using the user's GPUs.  See 
+# src/privacyraven/models/victims.py for a full set of supported parameters.
+
+model = train_four_layer_mnist_victim(gpus=1)
+
 # Create a query function for a target PyTorch Lightning model
-model = train_four_layer_mnist_victim()
-
-
 def query_mnist(input_data):
     # PrivacyRaven provides built-in query functions
     return get_target(model, input_data, (1, 28, 28, 1))
@@ -30,7 +32,7 @@ attack = ModelExtractionAttack(
     (1, 28, 28, 1),
     10,
     (3, 1, 28, 28),  # Shape of an EMNIST data point
-    "copycat",
+    "hopskipjump", # "copycat",
     FourLayerClassifier,
     784,  # 28 * 28 or the size of a single image
     emnist_train,

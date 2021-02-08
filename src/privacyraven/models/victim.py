@@ -20,7 +20,7 @@ def train_four_layer_mnist_victim(
     batch_size=100,
     num_workers=4,
     rand_split_val=None,
-    gpus=1,
+    gpus=None,
     max_epochs=8,
     learning_rate=1e-3,
 ):
@@ -40,6 +40,11 @@ def train_four_layer_mnist_victim(
 
     input_size = 784  # 28*28 or the size of a single image
     targets = 10  # the number of digits any image can possibly represent
+
+    # Uses all available GPUs for computation by default
+    if gpus is None:
+        gpus = torch.cuda.device_count()
+
     if transform is None:
         transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
@@ -74,7 +79,7 @@ def train_mnist_victim(
     batch_size=100,
     num_workers=4,
     rand_split_val=None,
-    gpus=1,
+    gpus=None,
     max_epochs=8,
     learning_rate=1e-3,
 ):
@@ -101,6 +106,11 @@ def train_mnist_victim(
     # Define hyperparameters implied by the use of MNIST
     input_size = 784
     targets = 10
+
+    # Uses all available GPUs for computation by default
+    if gpus is None:
+        gpus = torch.cuda.device_count()
+
     if transform is None:
         transform = transforms.Compose(
             [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
